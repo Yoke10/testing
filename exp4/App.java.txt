@@ -1,0 +1,30 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class App {
+    public static void main(String[] args) throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver",
+                "C:\\Users\\manis\\OneDrive\\Desktop\\idustry\\ex3\\src\\chromedriver\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.linkedin.com/login");
+        driver.manage().window().maximize();
+        WebElement email = driver.findElement(By.name("session_key"));
+        WebElement password = driver.findElement(By.name("session_password"));
+        WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+        email.sendKeys("your email");
+        password.sendKeys("your password");
+        button.click();
+        
+        Thread.sleep(10000);
+        WebElement search = driver.findElement(By.className("search-global-typeahead__input"));
+        search.sendKeys("amypo technologies private limited");
+        search.sendKeys(Keys.RETURN);
+        Thread.sleep(10000);
+        WebElement amypo = driver.findElement(By.xpath("//*[@id=\"ember256\"]"));
+        amypo.click();
+        // driver.quit();
+    }
+}

@@ -1,0 +1,39 @@
+import java.time.Duration;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class App {
+    private static WebDriver driver;
+    private static String baseUrl = "https://www.linkedin.com/login";
+
+    public static void main(String[] args) throws Exception {
+        System.setProperty("webdriver.chrome.driver",
+                "C:\\Users\\manis\\OneDrive\\Desktop\\idustry\\ex3\\src\\chromedriver\\chromedriver.exe");
+        // Initialize ChromeDriver instance
+        driver = new ChromeDriver();
+        driver.get(baseUrl);
+        driver.manage().window().maximize();
+        WebElement emailField = driver.findElement(By.id("username"));
+        emailField.sendKeys("3@gmail.com");
+        WebElement passwordField = driver.findElement(By.id("password"));
+        passwordField.sendKeys("b5");
+        WebElement signInButton = driver.findElement(By.xpath("//button[@type='submit']"));
+        signInButton.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+        WebElement search = wait
+                .until(ExpectedConditions.elementToBeClickable(
+                        By.xpath("//*[@id=\"global-nav-typeahead\"]/input")));
+        search.sendKeys("amypo technologies private limited");
+        search.sendKeys(Keys.RETURN);
+        WebElement follow = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
+                "/html/body/div[5]/div[3]/div[2]/div/div[1]/main/div/div/div[2]/div/ul/li/div/a/div/div[2]/div[1]/div/button")));
+        follow.click();
+        Thread.sleep(60000);
+        driver.quit();
+    }
+}

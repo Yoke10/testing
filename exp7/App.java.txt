@@ -1,0 +1,62 @@
+import java.time.Duration;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class App {
+    public static void main(String[] args) throws Exception {
+        System.out.println("Flipkart Mouse Handling:");
+
+        // Set the path for the ChromeDriver executable
+        System.setProperty("webdriver.chrome.driver",
+                "C:\\Users\\manis\\OneDrive\\Desktop\\idustry\\ex3\\src\\chromedriver\\chromedriver.exe");
+
+        // Initialize the WebDriver
+        WebDriver driver = new ChromeDriver();
+
+        // Maximize the browser window
+        driver.manage().window().maximize();
+
+        // Navigate to the Flipkart website
+        driver.get("https://flipkart.com");
+
+        // Initialize WebDriverWait with a timeout of 40 seconds
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+
+        // Locate the search bar and wait until it's clickable
+        WebElement srch = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
+                "//*[@id=\"container\"]/div/div[1]/div/div/div/div/div[1]/div/div[1]/div/div[1]/div[1]/header/div[1]/div[2]/form/div/div/input")));
+
+        // Enter "phone" into the search bar and press Enter
+        srch.sendKeys("phone");
+        srch.sendKeys(Keys.ENTER);
+
+        // Wait for the "More" element to be clickable and click it twice
+        WebElement more = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(
+                "//*[@id=\"container\"]/div/div[1]/div[1]/div[2]/div[5]")));
+        more.click();
+        more.click();
+
+        // Locate the elements for mouse actions
+        WebElement c = driver.findElement(By.xpath(
+                "//*[@id=\"container\"]/div/div[1]/div[1]/div[2]/div[5]/div/div/div[2]/div[2]"));
+        WebElement d = driver.findElement(By.xpath(
+                "//*[@id=\"container\"]/div/div[1]/div[1]/div[2]/div[5]/div/div/div[2]/div[2]/div/ul/li[2]/a"));
+
+        // Perform mouse actions using the Actions class
+        Actions action = new Actions(driver);
+        action.moveToElement(c).perform();
+        action.moveToElement(d).click().build().perform();
+
+        // Wait for 5 seconds to observe the actions
+        Thread.sleep(5000);
+
+        // Close the browser
+        driver.quit();
+    }
+}

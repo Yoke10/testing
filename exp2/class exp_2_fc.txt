@@ -1,0 +1,96 @@
+import java.sql.*;
+import java.util.Scanner;
+
+public class exp_2_fc {
+
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/model";
+    private static final String USER = "root";
+    private static final String PASSWORD = "blacky062005";
+
+    public static void createTable() throws Exception {
+        try (Connection con = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+                Statement st = con.createStatement()) {
+            String query = "CREATE TABLE IF NOT EXISTS Vehicle (" +
+                    "id INT PRIMARY KEY, " +
+                    "make VARCHAR(100), " +
+                    "model VARCHAR(100), " +
+                    "year INT, " +
+                    "price DECIMAL(10, 2)" +
+                    ")";
+            int rs = st.executeUpdate(query);
+            System.out.println("Table created successfully!");
+        }
+    }
+
+    public static void readData() throws Exception {
+        try (Connection con = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+                Statement st = con.createStatement()) {
+            String query = "SELECT * FROM Vehicle";
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("id"));
+                System.out.println("Make: " + rs.getString("make"));
+                System.out.println("Model: " + rs.getString("model"));
+                System.out.println("Year: " + rs.getInt("year"));
+                System.out.println("Price: $" + rs.getDouble("price"));
+                System.out.println(" ------------------");
+            }
+        }
+    }
+
+    public static void insertData() throws Exception {
+        Scanner sc = new Scanner(System.in);
+        try (Connection con = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
+            String query = "INSERT INTO Vehicle (id, make, model, year, price) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement pst = con.prepareStatement(query);
+            System.out.println("Enter Vehicle ID: ");
+            pst.setInt(1, sc.nextInt());
+            sc.nextLine(); // Consume newline
+            System.out.println("Enter Make: ");
+            pst.setString(2, sc.nextLine());
+            System.out.println("Enter Model: ");
+            pst.setString(3, sc.nextLine());
+            System.out.println("Enter Year: ");
+            pst.setInt(4, sc.nextInt());
+            System.out.println("Enter Price: ");
+            pst.setDouble(5, sc.nextDouble());
+            int rs = pst.executeUpdate();
+            System.out.println("Vehicle inserted successfully!");
+        }
+    }
+
+    public static void updateData() throws Exception {
+        Scanner sc = new Scanner(System.in);
+        try (Connection con = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
+            String query = "UPDATE Vehicle SET make = ?, model = ?, year = ?, price = ? WHERE id = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            System.out.println("Enter Vehicle ID to update: ");
+            int id = sc.nextInt();
+            sc.nextLine(); // Consume newline
+            System.out.println("Enter new Make: ");
+            pst.setString(1, sc.nextLine());
+            System.out.println("Enter new Model: ");
+            pst.setString(2, sc.nextLine());
+            System.out.println("Enter new Year: ");
+            pst.setInt(3, sc.nextInt());
+            System.out.println("Enter new Price: ");
+            pst.setDouble(4, sc.nextDouble());
+            pst.setInt(5, id);
+            int rs = pst.executeUpdate();
+            System.out.println("Vehicle updated successfully!");
+        }
+    }
+
+    public static void deleteData() throws Exception {
+        Scanner sc = new Scanner(System.in);
+        try (Connection con = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
+            String query = "DELETE FROM Vehicle WHERE id = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            System.out.println("Enter Vehicle ID to delete: ");
+            int id = sc.nextInt();
+            pst.setInt(1, id);
+            int rs = pst.executeUpdate();
+            System.out.println("Vehicle deleted successfully!");
+        }
+    }
+}

@@ -1,0 +1,35 @@
+mport java.util.Scanner;
+
+public App {
+    public static void main(String[] args) throws Exception {
+        exp_2_fc obj = new exp_2_fc();
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.println("Enter the Input:");
+            System.out.println("1: Create Table");
+            System.out.println("2: Insert Data");
+            System.out.println("3: Read Data");
+            System.out.println("4: Update Data");
+            System.out.println("5: Delete Data");
+            System.out.println("0: Exit");
+            int n = sc.nextInt();
+            if (n == 0) {
+                System.out.println("Exiting...");
+                break;
+            } else if (n == 1) {
+                obj.createTable();
+            } else if (n == 2) {
+                obj.insertData();
+            } else if (n == 3) {
+                obj.readData();
+            } else if (n == 4) {
+                obj.updateData();
+            } else if (n == 5) {
+                obj.deleteData();
+            } else {
+                System.out.println("Invalid input");
+            }
+        }
+        sc.close();
+    }
+}
